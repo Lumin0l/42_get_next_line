@@ -13,47 +13,100 @@
 /* For main */
 #include "get_next_line.h"
 
-
-/*
-Prototipos:
-ssize_t read(int fd, void *buf, size_t count);
-*/
-
-/*
-Quiero:
-	- Una función que lea todo y lo almacene en un buffer
-	- Una función que recorra este buffer y pare en '\n', copie todo hasta ese punto con '\0' al final y continue desde ese punto.
-*/
-
-char	*ft_read_all(int fd)
+char	*ft_read_line(int fd, char *st_buffer)
 {
-	char			*buf[BUFFER_SIZE];
-	static char		*static_buf;
-	unsigned int	i;
-	
-	static_buf = buf;
-	read(fd, buf, BUFFER_SIZE);
-	while (static_buf[i] != '\0')
+	char			*buffer;
+	int				control;
+
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
+	control = 1;
+	while (!ft_strchr(st_buffer, '\n') && control != 0)
 	{
-		i++;
-		if // ni idea de como seguir
-		
+		control = read(fd, buffer, BUFFER_SIZE);
+		if (control == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		buffer[control] = '\0';
+		st_buffer = ft_strjoin(st_buffer, buffer);
 	}
-
-
-
-
+	free(buffer);
+	return (st_buffer);
 }
-char *get_next_line(int fd)
+
+char	*ft_get_line(char *st_buffer)
 {
-	char *text;
+	unsigned int		i;
+	char				*str;
 
-	text = ft_read_all(fd);
-	
-	
+	i = 0;
+	if (!st_buffer[i])
+		return (NULL);
+	while (st_buffer[i] && st_buffer[i] != '\n')
+		i++;
+	str = malloc(sizeof(char) * (i + 2));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (st_buffer[i] && st_buffer[i] != '\n')
+	{
+		str[i] = st_buffer[i];
+		i++;
+	}
+	if (st_buffer[i] == '\n')
+	{
+		str[i] = st_buffer[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
 
+char	*ft_new_st_buffer(char *st_buffer)
+{
+	int		i;
+	int		j;
+	char	*str;
 
+	i = 0;
+	while (st_buffer[i] && st_buffer[i] != '\n')
+		i++;
+	if (!st_buffer[i])
+	{
+		free(st_buffer);
+		return (NULL);
+	}
+	str = (char *)malloc(sizeof(char) * (ft_strlen(st_buffer) - i + 1));
+	if (!str)
+		return (NULL);
+	i++;
+	j = 0;
+	while (st_buffer[i])
+		str[j++] = st_buffer[i++];
+	str[j] = '\0';
+	free(st_buffer);
+	return (str);
+}
+
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*st_buffer;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	st_buffer = ft_read_line(fd, st_buffer);
+	if (!st_buffer)
+		return (NULL);
+	line = ft_get_line(st_buffer);
+	st_buffer = ft_new_st_buffer(st_buffer);
+	return (line);
+}
+
+/*
 int	main(void)
 {
 	// Declaramos variables
@@ -77,3 +130,4 @@ int	main(void)
 	// Cierre de el archivo
 	close(fd);
 }
+*/
