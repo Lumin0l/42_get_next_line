@@ -13,6 +13,10 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
 /* For main */
 # include <fcntl.h>
 # include <stdio.h>
@@ -24,5 +28,6 @@ char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char *left_str, char *buff);
+char	*ft_new_st_buffer(char *st_buffer);
 
 #endif

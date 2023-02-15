@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* For main */
 #include "get_next_line.h"
 
 char	*ft_read_line(int fd, char *st_buffer)
@@ -28,6 +27,7 @@ char	*ft_read_line(int fd, char *st_buffer)
 		if (control == -1)
 		{
 			free(buffer);
+			free(st_buffer);
 			return (NULL);
 		}
 		buffer[control] = '\0';
@@ -45,9 +45,9 @@ char	*ft_get_line(char *st_buffer)
 	i = 0;
 	if (!st_buffer[i])
 		return (NULL);
-	while (st_buffer[i] && st_buffer[i] != '\n')
+	while (st_buffer[i] && st_buffer[i] != '\n') //strlen pero con '\n'
 		i++;
-	str = malloc(sizeof(char) * (i + 2));
+	str = malloc(sizeof(char) * (i + 2)); // 2 para \n y \0
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -72,19 +72,22 @@ char	*ft_new_st_buffer(char *st_buffer)
 	char	*str;
 
 	i = 0;
-	while (st_buffer[i] && st_buffer[i] != '\n')
+	while (st_buffer[i] && st_buffer[i] != '\n') // strlen pero con '\n'
 		i++;
 	if (!st_buffer[i])
 	{
 		free(st_buffer);
 		return (NULL);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(st_buffer) - i + 1));
+	str = (char *)malloc(sizeof(char) * (ft_strlen(st_buffer) - i));
 	if (!str)
+	{
+		free(str);
 		return (NULL);
+	}
 	i++;
 	j = 0;
-	while (st_buffer[i])
+	while (st_buffer[i] != '\0')
 		str[j++] = st_buffer[i++];
 	str[j] = '\0';
 	free(st_buffer);
@@ -94,7 +97,7 @@ char	*ft_new_st_buffer(char *st_buffer)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*st_buffer;
+	static char	*st_buffer = NULL;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);

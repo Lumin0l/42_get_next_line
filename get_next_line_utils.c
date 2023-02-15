@@ -6,7 +6,7 @@
 /*   By: ide-la-i <ide-la-i@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:18:54 by ide-la-i          #+#    #+#             */
-/*   Updated: 2023/02/07 10:55:29 by ide-la-i         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:32:29 by ide-la-i         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ char	*ft_strchr(const char *s, int c)
 
 char	*ft_strjoin(char *left_str, char *buff)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 	char	*str;
 
 	if (!left_str)
@@ -54,7 +54,7 @@ char	*ft_strjoin(char *left_str, char *buff)
 	if (!left_str || !buff)
 		return (NULL);
 	str = malloc(sizeof(char) * ((ft_strlen(left_str) + ft_strlen(buff)) + 1));
-	if (str == NULL)
+	if (!str)
 		return (NULL);
 	i = -1;
 	j = 0;
