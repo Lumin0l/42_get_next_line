@@ -17,9 +17,10 @@
 #  define BUFFER_SIZE 42
 # endif
 
-/* For main */
+/* For main 
 # include <fcntl.h>
 # include <stdio.h>
+*/
 /* For gnl */
 # include <unistd.h>
 # include <stdlib.h>

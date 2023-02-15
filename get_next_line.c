@@ -45,9 +45,9 @@ char	*ft_get_line(char *st_buffer)
 	i = 0;
 	if (!st_buffer[i])
 		return (NULL);
-	while (st_buffer[i] && st_buffer[i] != '\n') //strlen pero con '\n'
+	while (st_buffer[i] && st_buffer[i] != '\n')
 		i++;
-	str = malloc(sizeof(char) * (i + 2)); // 2 para \n y \0
+	str = malloc(sizeof(char) * (i + 2));
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -72,7 +72,7 @@ char	*ft_new_st_buffer(char *st_buffer)
 	char	*str;
 
 	i = 0;
-	while (st_buffer[i] && st_buffer[i] != '\n') // strlen pero con '\n'
+	while (st_buffer[i] && st_buffer[i] != '\n')
 		i++;
 	if (!st_buffer[i])
 	{
